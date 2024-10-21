@@ -1,0 +1,22 @@
+Answers for LINUX:
+
+1.find /var/log -name '.*log' -mtime +15 -size -500M
+2.find /path/to/directory -type l -exec rm {} +
+3. find /home/user ! -user $(whoami)
+4. find /etc -name '*config*' -perm /o=w
+5.grep -v 'bash' /etc/passwd
+6.grep -r1 --exclude-binary 'String' (directory)
+7. grep -c 3  'error' filename
+8.grep '^root' /etc/passwd
+9.find /home/user -type f| grep -v '\.mp4$'|tar -czf 
+10.tar -xzf archive.tar.gz file.txt
+11.tar -rzf archive.tar.gz newfile.txt
+12.tar -tzf archive.tar.gz
+13.ps aux | grep java | awk '{print $2, $11}'
+14.ls /var/log | grep error
+15.grep 'failed' filename| wc -l
+16.tail -n 20 logfile.txt|grep 'critical'
+17.du -h /home/use | sort -hr
+18.du -sh /var --exclude=/var/log
+19.find path/to/directory -type f -size +100M -exec -h {} +
+20.du -h /usr | sort -hr | head -n 10
