@@ -1,0 +1,55 @@
+1.Employees working on more than 1 project:
+
+select employee_id from employee_projects 
+group by employee_id having count(project_id)>1;
+
+2.Detect Salary gaps hint: you want to compare the average salary between departments.
+
+select d.name as department_name,department_id,avg(salary) as salary,max(salary)-min(salary) as salary_gap,name from employees e join departments d on
+e.department_id=d.id group by department_id,d.name;
+
+3.In Employees_Projects table some rows reference employees who no longer exist in the employees table. Remove these orphaned rows
+
+select ep.*
+from employees_projects ep
+left join employees e ON ep.employee_id = e.id
+where e.id is null;
+
+4.only order table it has 3 fields orderId primary key,
+ 
+custid and orderDate
+ 
+A customer can place only 1 order in a day
+ 
+If more that one order it is considered a duplicate.
+ 
+ creation of temp table:
+ ============================
+ //needs to get the data which wants to kept
+create temporary table temp_table as
+select min(order_id) as order_id from orders
+ group by cust_id,order_date;
+ 
+ delete query:
+ =============
+ 
+ delete from orders where order_id not in(
+ select order_id from temp_table);
+ 
+ needs to drop the temp_table:
+ 
+ drop table temp_table;
+ 
+ 5.remove combination of project_id,employee_id duplicate rows in employees_projects table
+ 
+     create temporary table temp_table1 as 
+    select employee_id,project_id,
+    row_number() over(partition by project_id,employee_id order by employee_id) 
+    as row_num from employees_projects; 
+	
+	delete from employees_projects 
+    where (employee_id,project_id)  in(select employee_id,project_id from temp_table1
+    where row_num>1);
+	
+	drop table temp_table1;
+ 
